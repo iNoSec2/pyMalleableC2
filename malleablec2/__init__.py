@@ -1,13 +1,11 @@
 import pathlib
-import pkg_resources
+from importlib.resources import files
 from lark import Lark, Tree, Token
 from lark.reconstruct import Reconstructor
 
-_grammar_file_path = pathlib.Path(
-    pkg_resources.resource_filename(__name__, "grammar.lark")
-)
+_grammar_file_path = files(__package__).joinpath("grammar.lark")
 
-_lark_parser = Lark.open(_grammar_file_path, parser="lalr") # LALR parser is faster than the default one
+_lark_parser = Lark.open(_grammar_file_path, parser="lalr", maybe_placeholders=False)  # LALR parser is faster
 
 _reconstructor = Reconstructor(_lark_parser)
 
